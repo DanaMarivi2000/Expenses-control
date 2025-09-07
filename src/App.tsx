@@ -4,6 +4,7 @@ import { budgetReducer, initialState } from "./reducers/expenses-reducer"
 import { useBudget } from "./hooks/useBudget"
 // import {useBudget} from "./hooks/useBudget"
 import ExpensesComponent from "./components/ExpensesComponent"
+import ExpenseModal from "./components/ExpensesModal"
 
 function App() {
 
@@ -32,6 +33,8 @@ function App() {
     </div>
       
     </header>
+
+     {isValidBudget && (<ExpenseModal/>)}
     </>
   )
 }
