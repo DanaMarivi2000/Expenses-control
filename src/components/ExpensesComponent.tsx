@@ -10,7 +10,7 @@ const ExpensesComponent = () => {
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
       <div className="flex justify-center items-center">
-        <img src="/grafico.jpg" alt="Gráfico de gastos" />
+        <img src="/grafico.png" alt="Gráfico de gastos" />
       </div>
       
       <div className="flex flex-col justify-center items-center gap-8">
