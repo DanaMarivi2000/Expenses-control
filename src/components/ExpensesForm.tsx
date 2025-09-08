@@ -20,7 +20,7 @@ const ExpensesForm = () => {
   
   const {register, handleSubmit,  formState: { errors }, control}=useForm()
   const onSubmit = (data: FieldValue<FormData>) => {
-    console.log(data)
+    
   }
   
 
@@ -77,7 +77,7 @@ const ExpensesForm = () => {
          >
           <option value="0">-- Seleccione--</option>
           {categories.map(category=>(
-            <option key={category.id} value={category.name}>{category.name}</option>
+            <option key={category.id} value={category.id}>{category.name}</option>
           ))}
         </select>
         {<ErrorMessage errors={errors} name="categories"/>}
