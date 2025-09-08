@@ -6,3 +6,10 @@ export type State={
     modal:boolean
  }
 
+export type Categories={
+    id:string,
+    name:string,
+    icon:string
+}
+
+export type CategoriesArray=Categories[]
