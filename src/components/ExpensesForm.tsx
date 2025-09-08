@@ -22,6 +22,7 @@ const ExpensesForm = () => {
   const onSubmit = (data: FieldValue<FormData>) => {
     console.log(data)
   }
+  
 
 
   // const onChangee = (
@@ -59,7 +60,8 @@ const ExpensesForm = () => {
           placeholder="Añade la cantidad del gasto: ej.300"
           {...register("amount",{
             required:"La cantidad es obligatoria",
-           validate:value=>value>0  || "El valor debe ser mayor a 0"
+            setValueAs:value=>Number(value),
+            validate:value=>value>0  || "El valor debe ser mayor a 0"
           })}
         />
       {<ErrorMessage errors={errors} name="amount"/>}
