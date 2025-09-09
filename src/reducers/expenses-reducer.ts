@@ -1,8 +1,12 @@
 import type { BudgetActions, State } from "../types"
+import {v4 as uuidv4} from "uuid"
+
+
 
 export const initialState={
     budget:0,
-    modal:false
+    modal:false,
+    expenses:[],
 }
 
 export const budgetReducer=(state:State=initialState, action:BudgetActions)=>{
@@ -23,10 +27,21 @@ export const budgetReducer=(state:State=initialState, action:BudgetActions)=>{
     if(action.type==="close-modal"){
         return{
             ...state,
-            modal:!state.modal
+            modal:false
         }
     }
 
+    if(action.type==="add-expense"){
+        
+
+        const id=uuidv4()
+        const newExpense={...action.payload.expense, id}
+        
+        return{
+            ...state,
+            expenses:[...state.expenses, newExpense],
+        }
+    }
 
     return state
 }

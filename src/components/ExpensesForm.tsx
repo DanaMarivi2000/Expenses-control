@@ -1,11 +1,14 @@
 import type { FieldValue } from "react-hook-form"
-import { useForm, Controller  } from "react-hook-form"
+import { useForm, Controller, useFormState  } from "react-hook-form"
 import { ErrorMessage } from "@hookform/error-message"
 import { categories } from "../data/categories";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import type {Value} from "../types";
+import { useBudget } from "../hooks/useBudget";
+import { useEffect } from "react";
+
 
 
 type FormData = {
@@ -18,12 +21,30 @@ type FormData = {
 
 const ExpensesForm = () => {
   
-  const {register, handleSubmit,  formState: { errors }, control}=useForm()
-  const onSubmit = (data: FieldValue<FormData>) => {
-    
-  }
+  const {state, dispatch}=useBudget()
+  
+  const {register, handleSubmit, formState, formState: { errors, isSubmitSuccessful }, control, reset}=useForm()
   
 
+  const onSubmit = (data: FieldValue<FormData>) => {
+        const expense =data as FormData
+
+        dispatch({type:"add-expense", payload:{expense:expense}})
+        // dispatch({type:"close-modal"})
+       
+  }
+
+   useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({
+          expenseName:"",
+          amount:0,
+          categories:"0",
+          date:new Date(),
+      })}
+  }, [isSubmitSuccessful, reset])
+
+  
 
   // const onChangee = (
   //   e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> 

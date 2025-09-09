@@ -1,10 +1,13 @@
 export type BudgetActions={type:"add-budget", payload:{budget:number}} |
-{type:"show-modal"} | {type:"close-modal"}
+{type:"show-modal"} | {type:"close-modal"} | 
+{type:"add-expense", payload:{expense:DraftExpense}}
 
 export type State={
     budget:number,
-    modal:boolean
+    modal:boolean,
+    expenses:Expense[]
  }
+
 
 export type Categories={
     id:string,
@@ -23,7 +26,7 @@ export type Expense={
     id:string,
     expenseName:string,
     amount:number,
-    category:string,
+    categories:string,
     date:Value,
 }
 
