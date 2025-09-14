@@ -24,7 +24,6 @@ const ExpensesComponent = () => {
       />
       
       </div>
-          
     </div>
     
 

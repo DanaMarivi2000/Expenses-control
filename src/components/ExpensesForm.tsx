@@ -1,5 +1,5 @@
 import type { FieldValue } from "react-hook-form"
-import { useForm, Controller, useFormState  } from "react-hook-form"
+import { useForm, Controller} from "react-hook-form"
 import { ErrorMessage } from "@hookform/error-message"
 import { categories } from "../data/categories";
 import DatePicker from "react-date-picker";
@@ -15,45 +15,38 @@ type FormData = {
   expenseName: string,
   amount:number,
   categories:string,
-  date:Value
+  date:Value,
 };
+
+const initialState:FormData={
+    expenseName:"",
+    amount:0,
+    categories:"0",
+    date:new Date(),
+}
 
 
 const ExpensesForm = () => {
   
-  const {state, dispatch}=useBudget()
+  const {dispatch}=useBudget()
   
-  const {register, handleSubmit, formState, formState: { errors, isSubmitSuccessful }, control, reset}=useForm()
+  const {register, handleSubmit, formState, formState: { errors, isSubmitSuccessful }, control, reset}
+  =useForm({defaultValues:initialState})
   
 
   const onSubmit = (data: FieldValue<FormData>) => {
         const expense =data as FormData
 
         dispatch({type:"add-expense", payload:{expense:expense}})
-        // dispatch({type:"close-modal"})
        
   }
 
    useEffect(() => {
     if (formState.isSubmitSuccessful) {
       reset({
-          expenseName:"",
-          amount:0,
-          categories:"0",
-          date:new Date(),
+          ...initialState
       })}
   }, [isSubmitSuccessful, reset])
-
-  
-
-  // const onChangee = (
-  //   e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> 
-  // ) => {
-  //   setExpense({
-  //     ...expense,
-  //     [e.target.id]: e.target.value
-  //   })
-  // }
 
 
     return (
@@ -67,8 +60,7 @@ const ExpensesForm = () => {
         placeholder="Añade el nombre del gasto" 
         className="bg-slate-100 p-2" 
         {...register("expenseName",{
-            required:"El nombre es obligatorio"
-            
+            required:"El nombre es obligatorio"    
         })}
         />
         <ErrorMessage errors={errors} name="expenseName" />

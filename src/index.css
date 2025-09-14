@@ -1,1 +1,17 @@
 @import "tailwindcss";
+.swipeable-list-item__leading-actions,
+.swipeable-list-item__trailing-actions{
+    @apply text-white text-lg uppercase font-bold;
+}
+
+.swipeable-list-item__leading-actions{
+    @apply bg-[#a2d2ff]
+}
+
+.swipeable-list-item__trailing-actions{
+    @apply bg-[#cdb4db]
+}
+
+.swipeable-list .swipe-action{
+    @apply flex justify-center items-center
+}

@@ -1,6 +1,7 @@
 export type BudgetActions={type:"add-budget", payload:{budget:number}} |
 {type:"show-modal"} | {type:"close-modal"} | 
-{type:"add-expense", payload:{expense:DraftExpense}}
+{type:"add-expense", payload:{expense:DraftExpense}} |
+{type:"delete-expense", payload:{id:Expense["id"]}}
 
 export type State={
     budget:number,
@@ -15,7 +16,7 @@ export type Categories={
     icon:string
 }
 
-type ValuePiece= Date | null;
+type ValuePiece= Date | string;
 
 export type Value= ValuePiece | [ValuePiece, ValuePiece];
 

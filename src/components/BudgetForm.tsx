@@ -1,9 +1,6 @@
 import { useMemo, useState } from "react"
 import {useBudget} from "../hooks/useBudget"
 import type { FormEvent } from "react"
-// const {state, dispatch}=useContext(BudgetContext)
-
-
 
 const BudgetForm = () => {
   
@@ -24,8 +21,6 @@ const BudgetForm = () => {
 
     dispatch({type:"add-budget", payload:{budget:budget}})}
   
- 
-
     return (
     <>
     

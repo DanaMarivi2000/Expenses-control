@@ -43,5 +43,14 @@ export const budgetReducer=(state:State=initialState, action:BudgetActions)=>{
         }
     }
 
+    if(action.type==="delete-expense"){
+        
+        const expenses=state.expenses.filter(expense=>expense.id!==action.payload.id)
+        return{
+            ...state,
+            expenses,
+        }
+    }
+
     return state
 }
