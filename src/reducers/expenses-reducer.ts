@@ -1,16 +1,29 @@
 import type { BudgetActions, State } from "../types"
 import {v4 as uuidv4} from "uuid"
+import type { Expense } from "../types"
 
+
+const initialBudget=():number=>{
+    const localStorageBudget=localStorage.getItem("budget")
+    return localStorageBudget?+localStorageBudget:0
+}
+
+const localStorageExpenses=():Expense[]=>{
+    const getStorage=localStorage.getItem("expenses")
+    return getStorage?JSON.parse(getStorage):[]
+}
 
 
 export const initialState={
-    budget:0,
+    budget:initialBudget(),
     modal:false,
-    expenses:[],
+    expenses: localStorageExpenses(),
     activeId:"",
 }
 
 export const budgetReducer=(state:State=initialState, action:BudgetActions)=>{
+
+           
     if(action.type==="add-budget"){
         return{
             ...state,
