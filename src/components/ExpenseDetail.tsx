@@ -26,7 +26,7 @@ const ExpenseDetail = ({expense}:ExpenseProps) => {
  const leadingActions=()=>(
   <LeadingActions>
     <SwipeAction
-      onClick={()=>{}}
+      onClick={()=>dispatch({type:"add-id", payload:{id:expense.id}})}
     >
       Actualizar
     </SwipeAction>
@@ -49,7 +49,7 @@ const ExpenseDetail = ({expense}:ExpenseProps) => {
 
         <SwipeableList>
           <SwipeableListItem
-          maxSwipe={30}
+          maxSwipe={1}
           leadingActions={leadingActions()}
           trailingActions={trailingActions()}
           

@@ -7,6 +7,7 @@ export const initialState={
     budget:0,
     modal:false,
     expenses:[],
+    activeId:"",
 }
 
 export const budgetReducer=(state:State=initialState, action:BudgetActions)=>{
@@ -33,15 +34,26 @@ export const budgetReducer=(state:State=initialState, action:BudgetActions)=>{
 
     if(action.type==="add-expense"){
         
-
         const id=uuidv4()
         const newExpense={...action.payload.expense, id}
-        
-        return{
-            ...state,
-            expenses:[...state.expenses, newExpense],
-        }
+
+        const expenseExists=state.expenses.find(expense=>expense.id===state.activeId)
+        if(expenseExists){
+            const expenses=state.expenses.map(expense=>expense.id===state.activeId?{...newExpense, id:state.activeId}:expense)
+            return{
+                ...state,
+                expenses,
+                activeId:"",
+            }
+       
+        }else{
+            return{
+                ...state,
+                expenses:[...state.expenses, newExpense],
+            }
+       
     }
+}
 
     if(action.type==="delete-expense"){
         
@@ -49,6 +61,15 @@ export const budgetReducer=(state:State=initialState, action:BudgetActions)=>{
         return{
             ...state,
             expenses,
+        }
+    }
+
+    if(action.type==="add-id"){
+
+        return{
+            ...state,
+            activeId:action.payload.id,
+            modal:true,
         }
     }
 

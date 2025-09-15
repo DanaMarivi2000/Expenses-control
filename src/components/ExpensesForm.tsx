@@ -28,17 +28,22 @@ const initialState:FormData={
 
 const ExpensesForm = () => {
   
-  const {dispatch}=useBudget()
+  const {state, dispatch}=useBudget()
+
+  const expenseExists=state.expenses.filter(expense=>expense.id===state.activeId)[0]
   
   const {register, handleSubmit, formState, formState: { errors, isSubmitSuccessful }, control, reset}
-  =useForm({defaultValues:initialState})
+  =useForm({defaultValues:{
+    expenseName:expenseExists?.expenseName,
+    amount:expenseExists?.amount,
+    categories:expenseExists?.categories,
+    date:expenseExists?.date,
+  }})
   
 
   const onSubmit = (data: FieldValue<FormData>) => {
         const expense =data as FormData
-
         dispatch({type:"add-expense", payload:{expense:expense}})
-       
   }
 
    useEffect(() => {
