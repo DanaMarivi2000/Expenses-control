@@ -7,7 +7,7 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import type {Value} from "../types";
 import { useBudget } from "../hooks/useBudget";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 
 
@@ -30,36 +30,51 @@ const ExpensesForm = () => {
   
   const {state, dispatch}=useBudget()
 
-  const expenseExists=state.expenses.filter(expense=>expense.id===state.activeId)[0]
   
-  const {register, handleSubmit, formState, formState: { errors, isSubmitSuccessful }, control, reset}
-  =useForm({defaultValues:{
-    expenseName:expenseExists?.expenseName,
-    amount:expenseExists?.amount,
-    categories:expenseExists?.categories,
-    date:expenseExists?.date,
-  }})
+    const {register, handleSubmit, formState, formState: { errors, isSubmitSuccessful }, control, reset}
+    =useForm({defaultValues:{...initialState}})
+    
   
+    useEffect(()=>{
+    if(state.activeId){
+      const expenseExists=state.expenses.filter(expense=>expense.id===state.activeId)[0]
+       if(expenseExists){{
+        reset({
+          expenseName:expenseExists.expenseName,
+          amount:expenseExists.amount,
+          categories:expenseExists.categories,
+          date:expenseExists.date,
+        })
+       }}
+    }
+     
+    }, [state.activeId, reset])
+
 
   const onSubmit = (data: FieldValue<FormData>) => {
         const expense =data as FormData
-        dispatch({type:"add-expense", payload:{expense:expense}})
+
+        if(state.activeId){
+          dispatch({type:"update-expense", payload:{expense:{...expense,id:state.activeId}}})
+        }else{
+          dispatch({type:"add-expense", payload:{expense:expense}})
+        }
   }
 
-   useEffect(() => {
+  useEffect(() => { 
     if (formState.isSubmitSuccessful) {
-      reset({
-          ...initialState
-      })}
-  }, [isSubmitSuccessful, reset])
-
-
+       reset({ ...initialState })
+    }},
+    [isSubmitSuccessful, reset])
+ 
+    const text=useMemo(()=>state.activeId,[state.activeId])
+    
     return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <legend className="uppercase text-center text-2xl font-black border-b-4 border-[#fb6f92] py-2">Nuevo Gasto</legend>
+      <legend className="uppercase text-center text-2xl font-black border-b-4 border-[#fb6f92] py-2">{text?"Editar Gasto:":"Nuevo Gasto:"} </legend>
       
       <div className="flex flex-col gap-2">
-        <label htmlFor="expenseName" className="text-xl">Nuevo Gasto: </label>
+        <label htmlFor="expenseName" className="text-xl">Nombre: </label>
         <input type="text" 
         id="expenseName" 
         placeholder="Añade el nombre del gasto" 
@@ -120,7 +135,7 @@ const ExpensesForm = () => {
       </div>
 
       <div className="flex flex-col p-2">
-        <button type="submit" className="bg-[#fb6f92] opacity-50 hover:opacity-90 p-1.5 text-white text-xl w-50 mx-auto mt-2 rounded-lg">Enviar</button>
+        <button type="submit" className="bg-[#fb6f92] opacity-50 hover:opacity-90 p-1.5 text-white text-xl w-50 mx-auto mt-2 rounded-lg">{text?"Actualizar Gasto":"Registrar Gasto"}</button>
       </div>
     </form>
   )
