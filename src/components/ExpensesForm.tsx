@@ -7,8 +7,8 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import type {Value} from "../types";
 import { useBudget } from "../hooks/useBudget";
-import { useEffect, useMemo } from "react";
-
+import { useEffect, useMemo, useState } from "react";
+import Error from "./Error"
 
 
 type FormData = {
@@ -28,17 +28,23 @@ const initialState:FormData={
 
 const ExpensesForm = () => {
   
-  const {state, dispatch}=useBudget()
+  const {state, dispatch, presupuesto, gastado, disponible}=useBudget()
 
   
     const {register, handleSubmit, formState, formState: { errors, isSubmitSuccessful }, control, reset}
     =useForm({defaultValues:{...initialState}})
     
-  
+    const [previousAmount, setPreviousAmount]=useState(0)
+    const [error, setError]=useState("")
+
+
     useEffect(()=>{
     if(state.activeId){
       const expenseExists=state.expenses.filter(expense=>expense.id===state.activeId)[0]
-       if(expenseExists){{
+      setPreviousAmount(expenseExists.amount)
+      
+
+      if(expenseExists){{
         reset({
           expenseName:expenseExists.expenseName,
           amount:expenseExists.amount,
@@ -53,25 +59,36 @@ const ExpensesForm = () => {
 
   const onSubmit = (data: FieldValue<FormData>) => {
         const expense =data as FormData
-
+        
+        if((expense.amount-previousAmount)>disponible){
+          setError("No hay suficiente presupuesto")
+          return;
+        }
+        
         if(state.activeId){
           dispatch({type:"update-expense", payload:{expense:{...expense,id:state.activeId}}})
         }else{
           dispatch({type:"add-expense", payload:{expense:expense}})
         }
-  }
-
-  useEffect(() => { 
-    if (formState.isSubmitSuccessful) {
-       reset({ ...initialState })
-    }},
-    [isSubmitSuccessful, reset])
- 
-    const text=useMemo(()=>state.activeId,[state.activeId])
-    
-    return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <legend className="uppercase text-center text-2xl font-black border-b-4 border-[#fb6f92] py-2">{text?"Editar Gasto:":"Nuevo Gasto:"} </legend>
+        
+      }
+      
+      
+      useEffect(() => { 
+        if (formState.isSubmitSuccessful) {
+          reset({ ...initialState })
+          setPreviousAmount(0)
+        }},
+        [isSubmitSuccessful, reset])
+        
+        const text=useMemo(()=>state.activeId,[state.activeId])
+        
+        
+        
+        return (
+         <form onSubmit={handleSubmit(onSubmit)}>
+          <Error>{error}</Error>
+         <legend className="uppercase text-center text-2xl font-black border-b-4 border-[#fb6f92] py-2">{text?"Editar Gasto:":"Nuevo Gasto:"} </legend>
       
       <div className="flex flex-col gap-2">
         <label htmlFor="expenseName" className="text-xl">Nombre: </label>
