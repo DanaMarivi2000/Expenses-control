@@ -3,13 +3,16 @@ export type BudgetActions={type:"add-budget", payload:{budget:number}} |
 {type:"add-expense", payload:{expense:DraftExpense}} |
 {type:"delete-expense", payload:{id:Expense["id"]}} |
 {type:"add-id", payload:{id:Expense["id"]}}|
-{type:"update-expense", payload:{expense:Expense}}
+{type:"update-expense", payload:{expense:Expense}}|
+{type:"reset-app"}|
+{type:"filter-by-category", payload:{id:Categories["id"]}}
 
 export type State={
     budget:number,
     modal:boolean,
     expenses:Expense[],
     activeId:Expense["id"],
+    idCategory:string,
  }
 
 

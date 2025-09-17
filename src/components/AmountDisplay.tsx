@@ -17,7 +17,7 @@ type AmountDisplayProps={
 const AmountDisplay = ({presupuesto, gastado, disponible}:AmountDisplayProps) => {
     
     
-    const data=[presupuesto, gastado, disponible]
+    const data=[presupuesto, disponible, gastado]
 
 
     return (

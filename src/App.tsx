@@ -5,6 +5,9 @@ import { useBudget } from "./hooks/useBudget"
 import ExpensesComponent from "./components/ExpensesComponent"
 import ExpenseModal from "./components/ExpensesModal"
 import ExpensesDisplay from "./components/ExpensesDisplay"
+import FilterByCategory from "./components/FilterByCategory"
+
+
 function App() {
 
   // const [state, dispatch]=useReducer(budgetReducer, initialState)
@@ -38,7 +41,8 @@ function App() {
     {isValidBudget ? (<ExpensesComponent/>) : (<BudgetForm />) }
     </div>
      {isValidBudget && (
-       <main className="max-w-3xl mx-auto py-10 bg-white mt-10">
+       <main className="max-w-3xl mx-auto bg-white mt-10 mb-3">
+        <FilterByCategory/>
         <ExpensesDisplay/>
         <ExpenseModal/>
       </main>

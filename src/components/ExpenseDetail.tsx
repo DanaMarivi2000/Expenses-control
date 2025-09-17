@@ -55,7 +55,7 @@ const ExpenseDetail = ({expense}:ExpenseProps) => {
           
           >
 
-          <div className="w-full shadow-lg rounded-lg p-10" key={expense.id}>
+          <div className='w-full' key={expense.id}>
                <p className="text-right">{formatDate(expense.date.toString())}</p>
                <div className="flex justify-between items-center gap-4 my-2">
                  <div>

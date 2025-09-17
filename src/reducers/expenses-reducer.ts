@@ -1,5 +1,5 @@
 import type { BudgetActions, State } from "../types"
-import {v4 as uuidv4} from "uuid"
+import { v4 as uuidv4 } from "uuid"
 import type { Expense } from "../types"
 
 
@@ -19,7 +19,11 @@ export const initialState={
     modal:false,
     expenses: localStorageExpenses(),
     activeId:"",
+    idCategory:""
 }
+
+
+
 
 export const budgetReducer=(state:State=initialState, action:BudgetActions)=>{
 
@@ -85,6 +89,22 @@ export const budgetReducer=(state:State=initialState, action:BudgetActions)=>{
                 activeId:"",
                 modal:false,
             }
+        }
+    }
+
+    if(action.type==="reset-app"){
+        return{
+            ...state,
+            budget:0,
+            expenses:[],
+        }
+    }
+
+    if(action.type==="filter-by-category"){
+        
+        return{
+            ...state,
+            idCategory:action.payload.id,
         }
     }
 

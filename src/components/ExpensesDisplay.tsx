@@ -1,26 +1,30 @@
-import {formatCurrency} from "../helpers/index"
-import {useBudget} from '../hooks/useBudget'
-import {categories} from '../data/categories'
-import {useMemo} from "react"
-import { formatDate } from "../helpers/index"
+import { useBudget } from '../hooks/useBudget'
+import { useMemo } from "react"
 import ExpenseDetail from "./ExpenseDetail"
+
 const ExpensesDisplay = () => {
   
   const {state}=useBudget()
-  const isEmpty=useMemo(()=>state.expenses.length,[state.expenses])
 
+  const filteredExpenses=state.expenses.filter(expense=>expense.categories===state.idCategory)
+  const expenses=state.idCategory?filteredExpenses:state.expenses
+  const isEmpty=useMemo(()=>expenses.length,[expenses])
+
+  
 
   return (
     <>
       {isEmpty ? (
-        <div>
+      <div className="mt-5">
           <p className="text-center font-bold text-2xl text-[#da627d]">Listado de Gastos:</p>
-          {state.expenses.map(expense => (
-            <ExpenseDetail key={expense.id} expense={expense} />
+          {expenses.map(expense => (
+            <div key={expense.id} className="shadow-lg rounded-lg p-10" >    
+              <ExpenseDetail key={expense.id} expense={expense} />
+            </div>
           ))}
-        </div>
+      </div>
       ) : (
-        <div className="shadow-lg rounded-lg p-10 text-center font-bold text-2xl text-[#da627d] bg-white">
+        <div className="shadow-lg rounded-lg p-10 text-center font-bold text-2xl text-[#da627d]">
           <p>No hay gastos</p>
         </div>
       )}
